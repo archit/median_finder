@@ -47,7 +47,7 @@ class Bucket(object):
     def get_median(self, k=None):
         """ Get the k-th order statistic from the numbers in this bucket. Defaults to the median. """
         if k is None:
-            k = len(self.numbers) / 2
+            k = len(self.numbers) // 2
         return self.numbers[k]
 
     def get_max(self):
@@ -131,10 +131,10 @@ class SophisticatedMedianFinder(object):
             else:
                 iter_node = next_node.pop()
                 i += len(iter_node.numbers)
-                if i > (self.total_numbers / 2):
+                if i > (self.total_numbers // 2):
                     break
                 iter_node = iter_node.right
-        return iter_node.get_median(i - (self.total_numbers / 2))
+        return iter_node.get_median(i - (self.total_numbers // 2))
 
 class NaiveMedianFinder(object):
     """
@@ -148,7 +148,7 @@ class NaiveMedianFinder(object):
         self.numbers.append(a_number)
 
     def get_median(self):
-        return sorted(self.numbers)[len(self.numbers) / 2]
+        return sorted(self.numbers)[len(self.numbers) // 2]
 
 def find_median(number_stream, batch_size=50, find_strategy=SophisticatedMedianFinder):
     """
