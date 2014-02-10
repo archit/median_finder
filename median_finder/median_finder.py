@@ -134,7 +134,8 @@ class SophisticatedMedianFinder(object):
                 if i > (self.total_numbers // 2):
                     break
                 iter_node = iter_node.right
-        return iter_node.get_median(i - (self.total_numbers // 2))
+
+        return iter_node.get_median(i - (self.total_numbers // 2) - 1)
 
 class NaiveMedianFinder(object):
     """

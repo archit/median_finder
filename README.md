@@ -1,4 +1,8 @@
-median_finder README
+## README
 
 This library implements a median finder algorithm that is eventually
 distributable. 
+
+## Requirements
+
+Depends on python3, nosetests
