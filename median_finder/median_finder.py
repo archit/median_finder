@@ -140,7 +140,7 @@ class SophisticatedMedianFinder(object):
                 target_node = node
                 break
 
-        return target_node.get_statistic(i - median_location - 1)
+        return target_node.get_statistic(len(target_node.numbers) - (i - median_location) - 1)
 
     def __str__(self):
         ret = ""
@@ -161,7 +161,7 @@ class NaiveMedianFinder(object):
 
     def get_median(self):
         if self.numbers:
-            return sorted(self.numbers)[math.ceil(len(self.numbers) / 2)]
+            return sorted(self.numbers)[math.ceil(len(self.numbers) / 2) - 1]
         else:
             return None
 
