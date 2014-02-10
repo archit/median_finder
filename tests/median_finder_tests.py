@@ -22,3 +22,6 @@ def test_files():
 
 def test_empty_stream():
     eq_(find_median([], 3), None)
+
+def test_single():
+    eq_(find_median([5], 100), 5)
