@@ -58,18 +58,18 @@ recursively goes down the right child tree, to find a bucket with
 available capacity.
 
 The time complexity of these insertion step
-average case: n.log(n/|B|) where |B| is size of the bucket
+average case: O(n.log(n/|B|)) where |B| is size of the bucket
 worst case:   O(n^2)
 
 Once the BST is setup, finding the median is relatively easy. The
 algorithm uses an in-order traversal to find the bucket containing the
 median of all the numbers, and then returns the median from that
 bucket. The time complexity of this find step
-average case: O(log(n/|B|))
+average case: O(log(n/|B|)) where |B| is size of the bucket
 worst case:   O(n)
 
 The overall algorithm complexity is
-average case: n.log(n/|B|)
+average case: O(n.log(n/|B|)) where |B| is size of the bucket
 worst case:   O(n^2)
 
 ## Suggested Improvements

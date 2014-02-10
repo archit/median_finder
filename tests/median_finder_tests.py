@@ -19,3 +19,6 @@ def test_files():
             with open(filename_with_path) as file:
                 expected = find_median(file, bucket_size, NaiveMedianFinder)
             eq_(expected, actual, "{} != {} (bucket_size={})".format(expected, actual, bucket_size))
+
+def test_empty_stream():
+    eq_(find_median([], 3), None)

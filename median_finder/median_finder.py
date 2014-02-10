@@ -1,3 +1,5 @@
+import math
+
 class Tree(object):
     """
     Represents a Binary tree
@@ -27,12 +29,6 @@ class Tree(object):
 class Bucket(object):
     """
     Objects of this class simulate a memory limited list of numbers.
-    It supports operations
-    - insert_number
-    - get_median
-    - get_max
-    - get_min
-    - is_full
 
     It also proxies any other methods straight to the list implementation
     contained within.
@@ -57,10 +53,10 @@ class Bucket(object):
                 i += 1
         self.numbers.insert(i, a_number)
 
-    def get_median(self, k=None):
+    def get_statistic(self, k=None):
         """ Get the k-th order statistic from the numbers in this bucket. Defaults to the median. """
         if k is None:
-            k = len(self.numbers) // 2
+            k = math.ceil(len(self.numbers) / 2)
         return self.numbers[k]
 
     def get_max(self):
@@ -74,6 +70,10 @@ class Bucket(object):
     def is_full(self):
         """ Returns if the bucket is at capacity """
         return len(self.numbers) >= self.size
+
+    def in_range(self, a_number):
+        """ Predicate to check if `a_number` should belong to the `bucket` in `node` """
+        return a_number >= self.get_min() and a_number <= self.get_max()
 
     def __getattr__(self, name):
         """ Delegate all other methods to the conained list of numbers """
@@ -97,7 +97,7 @@ class SophisticatedMedianFinder(object):
     def insert_number(self, a_number, node):
         """ This is a tree sort insert algorithm. """
         if node.data.is_full():
-            if self.node_contains(node, a_number):
+            if node.in_range(a_number):
                 # Decide which `side` we're going to bump. Before inserting
                 # the number in the bucket, we pick the side, and bump the
                 # `last` number from that side of the bucket down the tree.
@@ -127,28 +127,30 @@ class SophisticatedMedianFinder(object):
         else:
             node.insert_number(a_number)
 
-    def node_contains(self, node, a_number):
-        """ Predicate to check if `a_number` should belong to the `bucket` in `node` """
-        return a_number >= node.get_min() and a_number <= node.get_max()
-
     def get_median(self):
         """ Do a tree sort search for bucket which will contain the median """
-        # Debug:
-        # for node in self.root_bucket.inorder_walker():
-        #     print("node={}".format(node.numbers))
+        if len(self.root_bucket.numbers) == 0:
+            return None
 
         i = 0
+        median_location = math.ceil(self.total_numbers / 2)
         for node in self.root_bucket.inorder_walker():
             i += len(node.numbers)
-            if i > (self.total_numbers // 2):
+            if i >= median_location:
                 target_node = node
                 break
 
-        return target_node.get_median(i - (self.total_numbers // 2) - 1)
+        return target_node.get_statistic(i - median_location - 1)
+
+    def __str__(self):
+        ret = ""
+        for node in self.root_bucket.inorder_walker():
+            ret += "{}".format(node.numbers)
+        return ret
 
 class NaiveMedianFinder(object):
     """
-    A naive implementatin of finding the median of a list of numbers
+    A naive implementation of finding the median of a list of numbers
     by using a simple array and in memory sort.
     """
     def __init__(self, batch_size):
@@ -158,7 +160,10 @@ class NaiveMedianFinder(object):
         self.numbers.append(a_number)
 
     def get_median(self):
-        return sorted(self.numbers)[len(self.numbers) // 2]
+        if self.numbers:
+            return sorted(self.numbers)[math.ceil(len(self.numbers) / 2)]
+        else:
+            return None
 
 def find_median(number_stream, batch_size=50, find_strategy=SophisticatedMedianFinder):
     """
