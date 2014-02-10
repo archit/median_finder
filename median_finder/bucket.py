@@ -28,7 +28,7 @@ class Bucket(object):
     def get_statistic(self, k=None):
         """ Get the k-th order statistic from the numbers in this bucket. Defaults to the median. """
         if k is None:
-            k = math.ceil(len(self.numbers) / 2)
+            k = math.ceil(len(self.numbers) / 2) - 1
         return self.numbers[k]
 
     def get_max(self):
