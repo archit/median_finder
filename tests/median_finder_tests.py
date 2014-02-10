@@ -1,6 +1,7 @@
 import os
 from nose.tools import *
 from median_finder.median_finder import *
+from median_finder.naive import *
 
 # Courtesy http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python
 def file_len(fname):
