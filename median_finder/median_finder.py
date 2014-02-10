@@ -142,6 +142,7 @@ class SophisticatedMedianFinder(object):
         i = 0
         target_node = None
         def find_median(node):
+            nonlocal i, target_node
             i += len(node.numbers)
             if i > (self.total_numbers // 2):
                 target_node = node
