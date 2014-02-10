@@ -7,6 +7,19 @@ class Tree(object):
         self.left = left
         self.right = right
 
+    def inorder_walker(self):
+        """ Perform an inorder traversal of the tree using generators. """
+        iter_node = self
+        next_node = []
+        while next_node or iter_node:
+            if iter_node:
+                next_node.append(iter_node)
+                iter_node = iter_node.left
+            else:
+                iter_node = next_node.pop()
+                yield iter_node
+                iter_node = iter_node.right
+
     def __getattr__(self, name):
         """ Delegate all other methods to the data payload """
         return getattr(self.data, name)
@@ -118,38 +131,19 @@ class SophisticatedMedianFinder(object):
         """ Predicate to check if `a_number` should belong to the `bucket` in `node` """
         return a_number >= node.get_min() and a_number <= node.get_max()
 
-    def inorder_walk(self, start_node, visit):
-        """ Perform an inorder traversal of the tree.
-        Also supports aborting the walk, if the visit lambda returns False """
-        iter_node = start_node
-        next_node = []
-        while next_node or iter_node:
-            if iter_node:
-                next_node.append(iter_node)
-                iter_node = iter_node.left
-            else:
-                iter_node = next_node.pop()
-                if visit(iter_node) == False:
-                    break
-                iter_node = iter_node.right
-
-
     def get_median(self):
         """ Do a tree sort search for bucket which will contain the median """
-# Debug:
-#        self.inorder_walk(self.root_bucket, lambda node: print("node={}".format(node.numbers)))
+        # Debug:
+        # for node in self.root_bucket.inorder_walker():
+        #     print("node={}".format(node.numbers))
 
         i = 0
-        target_node = None
-        def find_median(node):
-            nonlocal i, target_node
+        for node in self.root_bucket.inorder_walker():
             i += len(node.numbers)
             if i > (self.total_numbers // 2):
                 target_node = node
-                return False
-            else:
-                return True
-        self.inorder_walk(self.root_bucket, find_median)
+                break
+
         return target_node.get_median(i - (self.total_numbers // 2) - 1)
 
 class NaiveMedianFinder(object):

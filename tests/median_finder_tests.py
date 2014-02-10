@@ -9,7 +9,8 @@ def file_len(fname):
             pass
     return i + 1
 
-def test_all():
+# Test working with files
+def test_files():
     for filename in ["input1", "input2"]:
         filename_with_path = os.path.abspath("tests/{}.txt".format(filename))
         for bucket_size in range(1, file_len(filename_with_path)):
