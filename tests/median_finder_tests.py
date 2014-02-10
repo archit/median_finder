@@ -1,13 +1,20 @@
-from nose.tools import *
 import os
+from nose.tools import *
 from median_finder.median_finder import *
 
+# Courtesy http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python
+def file_len(fname):
+    with open(fname) as f:
+        for i, l in enumerate(f):
+            pass
+    return i + 1
+
 def test_all():
-    BUCKET_SIZE = 5
     for filename in ["input1", "input2"]:
-        with open(os.path.abspath("tests/{}.txt".format(filename))) as file:
-            actual   = find_median(file, BUCKET_SIZE)
-        with open(os.path.abspath("tests/{}.txt".format(filename))) as file:
-            expected = find_median(file, BUCKET_SIZE, NaiveMedianFinder)
-        print("Using size={}, expected={}, actual={}", BUCKET_SIZE, expected, actual)
-        assert expected == actual
+        filename_with_path = os.path.abspath("tests/{}.txt".format(filename))
+        for bucket_size in range(1, file_len(filename_with_path)):
+            with open(filename_with_path) as file:
+                actual   = find_median(file, bucket_size)
+            with open(filename_with_path) as file:
+                expected = find_median(file, bucket_size, NaiveMedianFinder)
+            eq_(expected, actual, "{} != {} (bucket_size={})".format(expected, actual, bucket_size))
