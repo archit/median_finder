@@ -26,9 +26,9 @@ numbers using two strategies.
 
 The NaiveMedianFinder implements a simple in-memory array strategy.
 The algorithm is
-1. Add numbers to an array
-2. Sort the array
-3. Reference the median using array access.
+  1. Add numbers to an array
+  2. Sort the array
+  3. Reference the median using array access.
 
 The run time efficiency is thus O(n) + O(n.log(n)) = O(n.log(n))
 
